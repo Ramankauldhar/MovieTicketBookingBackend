@@ -4,6 +4,7 @@ const Users = require("../model/users");
 const bcrypt = require("bcrypt");
 //for security of email and pswd
 const jwt = require("jsonwebtoken");
+const validateUser = require('../middleware/ValidateUser');
 
 router.post("/register", (req, res) => {
   bcrypt.hash(req.body.pswd, 10, (err, hash) => {
@@ -55,7 +56,7 @@ router.post("/login", (req, res) => {
           // command: npm i jsonwebtoken --save
           //Jwt will provide a long encrypted string to hide the data
           const token = jwt.sign(payload, "webBatch");
-          //webBatch is a secrate key where I want Jwt to hide the email and pswd .... if this will not be used, the user will not be able to login so it is hard to hack by hackers
+          //"webBatch" is a secrate key where I want Jwt to hide the email and pswd .... if this will not be used, the user will not be able to login so it is hard to hack by hackers
           return res.json({
             success: true,
             token: token,
@@ -73,6 +74,14 @@ router.post("/login", (req, res) => {
       res.json({ success: false, message: "Email/Password is wrong" });
     });
 });
-router.get("/profile", (req, res) => {});
+router.get("/profile", validateUser, (req, res) => {
+  const u_id = req.userData.userEmail;
+
+  Users.findById(u_id).exec().then((result) => {
+    res.json({success:true, data:result});
+  }).catch(error=>{
+    res.json({success:false, message:"Server Error"});
+  })
+});
 
 module.exports = router;
