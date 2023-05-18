@@ -2,7 +2,7 @@ const express = require("express");
 //here require means i want to include express in my project
 const app = express();
 // here i am using express libray. To use it, it is very important make A FUCNTION of it
-const port = process.env.port || 8028;
+const port = process.env.port || 8024;
 //to covert the data in JSON format
 const bodyParser = require("body-parser");
 // getting-started.js
