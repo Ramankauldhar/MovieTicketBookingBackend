@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const bookingSchema = new Schema(
     {
         email:{
-            type:String, unique: true
+            type:String, required:true
         },
         movieTitle:{
             type:String, required: true

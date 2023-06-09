@@ -1,8 +1,10 @@
 const express = require("express");
+const router = require("express").Router();
+const bookingInfo = require("./model/ticketBooking");
 //here require means i want to include express in my project
 const app = express();
 // here i am using express libray. To use it, it is very important make A FUCNTION of it
-const port = process.env.port || 8024;
+const port = process.env.port || 8022;
 //to covert the data in JSON format
 const bodyParser = require("body-parser");
 // getting-started.js
@@ -34,6 +36,25 @@ app.use("/auth", authenticationRoute);
 
 app.get("/", (req, res) => {
   res.send("Welcome to Raman's Coding environment");
+});
+
+app.post("/bookticket", (req, res) => {
+  const booking = new bookingInfo({
+    email: req.body.email,
+    movieTitle: req.body.movieTitle,
+    showTime: req.body.showTime,
+    noOfTickets: req.body.noOfTickets,
+    totalPrice: req.body.totalPrice,
+    seats: req.body.seats
+  });
+  booking
+    .save()
+    .then((_) => {
+      res.json({ success: true, message: "Booking Done" });
+    })
+    .catch((err) => {
+      res.json({ success: false, message: "Error: Can not book the ticket" });
+    });
 });
 
 app.listen(port, () => {
