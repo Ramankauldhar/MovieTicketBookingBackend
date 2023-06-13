@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Users = require("../model/users");
+const bookingInfo = require("../model/ticketBooking");
 
 //bcrypt to encrypt the password for security
 const bcrypt = require("bcrypt");
@@ -73,6 +74,25 @@ router.post("/login", (req, res) => {
     })
     .catch((err) => {
       res.json({ success: false, message: "Email/Password is wrong" });
+    });
+});
+
+router.post("/bookticket", (req, res) => {
+  const booking = new bookingInfo({
+    email: req.body.email,
+    movieTitle: req.body.movieTitle,
+    showTime: req.body.showTime,
+    noOfTickets: req.body.noOfTickets,
+    totalPrice: req.body.totalPrice,
+    seats: req.body.seats
+  });
+  booking
+    .save()
+    .then((_) => {
+      res.json({ success: true, message: "Booking Done" });
+    })
+    .catch((err) => {
+      res.json({ success: false, message: "Error: Can not book the ticket. All fields are required" });
     });
 });
 
