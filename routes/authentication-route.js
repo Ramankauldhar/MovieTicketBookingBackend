@@ -96,6 +96,21 @@ router.post("/bookticket", (req, res) => {
     });
 });
 
+router.get("/bookings", validateUser, (req, res) => {
+  const userEmail = req.userData.userEmail;
+
+  // Find all bookings for the user with the specified email
+  bookingInfo.find({ email: userEmail })
+    .exec()
+    .then((bookings) => {
+      res.json({ success: true, data: bookings });
+    })
+    .catch((err) => {
+      res.status(500).json({ success: false, message: "Server Error" });
+    });
+});
+
+
 router.get("/profile", validateUser, (req, res) => {
   const u_id = req.userData.userEmail;
 
