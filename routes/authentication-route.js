@@ -62,6 +62,7 @@ router.post("/login", (req, res) => {
           return res.json({
             success: true,
             token: token,
+            email: user.email,
             message: "Login Successful",
           });
         } else {
@@ -97,13 +98,13 @@ router.post("/bookticket", (req, res) => {
 });
 
 router.get("/bookings", validateUser, (req, res) => {
-  const userEmail = req.userData.userEmail;
-
+  const userEmail = req.body.email;
+  console.log("email: "+ userEmail);
   // Find all bookings for the user with the specified email
-  bookingInfo.find({ email: userEmail })
+  bookingInfo.find({email: userEmail})
     .exec()
     .then((bookings) => {
-      res.json({ success: true, data: bookings });
+      res.json({ success: true, data: bookings});
     })
     .catch((err) => {
       res.status(500).json({ success: false, message: "Server Error" });
