@@ -98,10 +98,10 @@ router.post("/bookticket", (req, res) => {
 });
 
 router.get("/bookings/:email", validateUser, (req, res) => {
-  const userEmail = req.params.email;
-  console.log("email: "+ userEmail);
+  const email = req.params.email;
+  console.log("email: "+ email);
   // Find all bookings for the user with the specified email
-  bookingInfo.find({email: userEmail})
+  bookingInfo.find({email: email})
     .exec()
     .then((bookings) => {
       res.json({ success: true, data: bookings});
